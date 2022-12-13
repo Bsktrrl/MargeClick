@@ -63,6 +63,16 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
                         return;
                     }
+                    else
+                    {
+                        eventData.pointerDrag.GetComponent<DragDrop>().transform.position = itemManager.item_List[i].GetComponent<Item>().itemPosition;
+                        itemManager.item_List[i].transform.position = eventData.pointerDrag.GetComponent<Item>().itemPosition;
+
+                        eventData.pointerDrag.GetComponent<Item>().itemPosition = eventData.pointerDrag.GetComponent<DragDrop>().transform.position;
+                        itemManager.item_List[i].GetComponent<Item>().itemPosition = itemManager.item_List[i].transform.position;
+
+                        return;
+                    }
                 }
             }
         }

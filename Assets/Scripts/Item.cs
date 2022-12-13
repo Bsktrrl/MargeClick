@@ -13,6 +13,7 @@ public class Item : MonoBehaviour
     public Vector2 itemPosition;
     public int itemListPosition;
 
+
     //--------------------
 
 

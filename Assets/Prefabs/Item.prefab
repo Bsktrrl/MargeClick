@@ -104,8 +104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  canvasGroup: {fileID: 0}
   isConnected: 0
-  itemValue: 0
+  isDragging: 0
 --- !u!114 &-199905512298392897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,3 +119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06f288688d6d8ae438a747ef3b0dff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemValue: 0
+  itemPosition: {x: 0, y: 0}
+  itemListPosition: 0

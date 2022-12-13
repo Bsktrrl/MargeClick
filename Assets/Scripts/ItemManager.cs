@@ -7,22 +7,23 @@ public class ItemManager : MonoBehaviour
 {
     ItemSlotManager itemSlotManager;
     MainManager mainManager;
+    Item item;
 
     [Header("Objects")]
     public GameObject item_Parent;
     public GameObject item_Prefab;
 
     [Header("Sprites")]
-    public Sprite Crate_1;
-    public Sprite Crate_2;
-    public Sprite Crate_3;
-    public Sprite Crate_4;
-    public Sprite Crate_5;
-    public Sprite Crate_6;
-    public Sprite Crate_NULL;
+    public Sprite Item_1;
+    public Sprite Item_2;
+    public Sprite Item_3;
+    public Sprite Item_4;
+    public Sprite Item_5;
+    public Sprite Item_6;
+    public Sprite Item_NULL;
 
     [Header("Lists")]
-    public List<GameObject> item_List;
+    public List<GameObject> item_List = new List<GameObject>();
 
 
     //--------------------
@@ -32,22 +33,24 @@ public class ItemManager : MonoBehaviour
     {
         itemSlotManager = FindObjectOfType<ItemSlotManager>();
         mainManager = FindObjectOfType<MainManager>();
-
+        item = FindObjectOfType<Item>();
     }
 
 
     //--------------------
 
 
-    public void SnapBackToStartPosition(Transform transform, bool isConnected)
+    public void SnapBackToStartPosition()
     {
-        //Force all dice not connected to a ItemSlot, to move back to their starting position
-        for (int i = 0; i < mainManager.crate_List.Count; i++)
+        //Force all Items not connected to an ItemSlot, to move back to their starting position
+        for (int i = 0; i < item_List.Count; i++)
         {
-            if (!mainManager.crate_List[i].GetComponent<DragDrop>().isConnected)
+            if (!item_List[i].GetComponent<DragDrop>().isConnected)
             {
-                mainManager.crate_List[i].transform.position = mainManager.itemSlot_List[i].transform.position;
+                item_List[i].GetComponent<DragDrop>().transform.position = item_List[i].GetComponent<Item>().itemPosition;
             }
+
+            item_List[i].GetComponent<Item>().itemPosition = item_List[i].GetComponent<DragDrop>().transform.position;
         }
     }
 }

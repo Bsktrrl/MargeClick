@@ -90,4 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasItem: 0
-  valueStored: 0
+  slotPosition: {x: 0, y: 0}
+  posX: 0
+  posY: 0
+  thisGO: {fileID: 8386164316236259378}

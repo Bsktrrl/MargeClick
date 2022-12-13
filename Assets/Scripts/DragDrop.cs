@@ -6,17 +6,17 @@ using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    MainManager mainManager;
     ItemSlotManager itemSlotManager;
     ItemManager itemManager;
 
     [SerializeField] Canvas canvas;
 
     RectTransform rectTransform;
-    CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
 
     public bool isConnected;
-
-    public int itemValue;
+    public bool isDragging;
 
 
     //--------------------
@@ -24,12 +24,13 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     private void Awake()
     {
+        mainManager = FindObjectOfType<MainManager>();
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        itemManager = GetComponent<ItemManager>();
     }
     private void Start()
     {
+        itemManager = FindObjectOfType<ItemManager>();
         itemSlotManager = FindObjectOfType<ItemSlotManager>();
 
         //Find the canvas for DragDrop scaling
@@ -43,28 +44,30 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     //--------------------
 
 
-    
-
-
-    //--------------------
-
-
     //When GameObject is pressed
     public void OnPointerDown(PointerEventData eventData)
     {
         canvasGroup.alpha = 0.75f;
         canvasGroup.blocksRaycasts = false;
+        mainManager.BlockRaycastFalse();
+
+        isDragging = true;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        mainManager.BlockRaycastFalse();
+
+        isDragging = false;
     }
 
     //Drag Handler
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+
+        isDragging = true;
     }
 
     //When Dragging
@@ -72,6 +75,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     {
         canvasGroup.alpha = 0.75f;
         canvasGroup.blocksRaycasts = false;
+        mainManager.BlockRaycastFalse();
 
         if (isConnected)
         {
@@ -85,7 +89,10 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        mainManager.BlockRaycastTrue();
 
-        itemManager.SnapBackToStartPosition(gameObject.transform, isConnected);
+        itemManager.SnapBackToStartPosition();
+
+        isDragging = false;
     }
 }

@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Crate : MonoBehaviour
 {
     ItemManager itemManager;
     MainManager mainManager;
+    CrateManager crateManager;
 
-    public int listPosition;
+    public int crateListPosition;
 
 
     //--------------------
@@ -17,6 +19,9 @@ public class Crate : MonoBehaviour
     {
         itemManager = FindObjectOfType<ItemManager>();
         mainManager = FindObjectOfType<MainManager>();
+        crateManager = FindObjectOfType<CrateManager>();
+
+        gameObject.GetComponent<Image>().sprite = crateManager.Crate_1;
     }
 
 
@@ -25,25 +30,20 @@ public class Crate : MonoBehaviour
 
     public void Crate_OnClick()
     {
-        //Preperation
-        itemManager.item_List.Clear();
-        itemManager.item_List = new List<GameObject>();
-
         //Instantiate Item
         InstantiateItem();
 
-        //Destroy this gameobject
-        //print("ListElement: " + listPosition);
-
+        //Prepare all items higher in crate_List for this cate's removal, by decreasing their element position
         for (int i = 0; i < mainManager.crate_List.Count; i++)
         {
-            if (mainManager.crate_List[i].GetComponent<Crate>().listPosition > gameObject.GetComponent<Crate>().listPosition)
+            if (mainManager.crate_List[i].GetComponent<Crate>().crateListPosition > gameObject.GetComponent<Crate>().crateListPosition)
             {
-                mainManager.crate_List[i].GetComponent<Crate>().listPosition -= 1;
+                mainManager.crate_List[i].GetComponent<Crate>().crateListPosition -= 1;
             }
         }
 
-        mainManager.crate_List.RemoveAt(listPosition);
+        //Destroy this gameobject
+        mainManager.crate_List.RemoveAt(crateListPosition);
         Destroy(gameObject);
     }
 
@@ -53,5 +53,11 @@ public class Crate : MonoBehaviour
         itemManager.item_List[itemManager.item_List.Count - 1].transform.parent = itemManager.item_Parent.transform;
 
         itemManager.item_List[itemManager.item_List.Count - 1].transform.position = gameObject.transform.position;
+        
+        itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemPosition = gameObject.transform.position;
+        itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemListPosition = itemManager.item_List.Count - 1;
+        itemManager.item_List[itemManager.item_List.Count - 1].name = ("Item " + itemManager.item_List.Count);
+
+        print("Expand ItemList: " + itemManager.item_List.Count);
     }
 }

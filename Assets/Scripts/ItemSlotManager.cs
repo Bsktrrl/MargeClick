@@ -8,13 +8,7 @@ public class ItemSlotManager : MonoBehaviour
     ItemManager itemManager;
     MainManager mainManager;
 
-    [Header("Images")]
-    [SerializeField] Image display_Image;
-
     public bool isOccupied;
-    public int storedValueForDisplay;
-
-    int count;
 
 
     //--------------------
@@ -28,73 +22,54 @@ public class ItemSlotManager : MonoBehaviour
     private void Update()
     {
         UpdateConnections();
-
-        UpdateDisplaySprite();
     }
 
 
     //-------------------- Update
 
 
-    void UpdateDisplaySprite()
-    {
-        if (isOccupied)
-        {
-            if (storedValueForDisplay == 1)
-                display_Image.sprite = itemManager.Crate_1;
-            else if (storedValueForDisplay == 2)
-                display_Image.sprite = itemManager.Crate_2;
-            else
-                display_Image.sprite = itemManager.Crate_3;
-        }
-        else
-        {
-            display_Image.sprite = itemManager.Crate_3;
-        }
-    }
-
-
-    //--------------------
-
-
-    public void StoreValue(int value)
-    {
-        storedValueForDisplay = value;
-    }
-
     void UpdateConnections()
     {
-        ////Regulate itemSlot.hasItem 
-        //for (int i = 0; i < itemSlot_List.Count; i++)
-        //{
-        //    for (int j = 0; j < itemManager.Dice_List.Count; j++)
-        //    {
-        //        if (itemSlot_List[i].transform.position == itemManager.Dice_List[j].transform.position)
-        //        {
-        //            itemSlot_List[i].GetComponent<ItemSlot>().hasItem = true;
+        //Regulate itemSlot.hasItem 
+        for (int i = 0; i < mainManager.itemSlot_List.Count; i++)
+        {
+            //If items are occuping a slot
+            int itemCount = 0;
+            for (int j = 0; j < itemManager.item_List.Count; j++)
+            {
+                if (mainManager.itemSlot_List[i].transform.position == itemManager.item_List[j].transform.position)
+                {
+                    mainManager.itemSlot_List[i].GetComponent<ItemSlot>().hasItem = true;
 
-        //            j = itemManager.Dice_List.Count;
-        //        }
-        //        else
-        //        {
-        //            itemSlot_List[i].GetComponent<ItemSlot>().hasItem = false;
-        //        }
-        //    }
-        //}
+                    j = itemManager.item_List.Count;
+                }
+                else
+                {
+                    itemCount++;
+                }
+            }
 
-        ////Reset Values if the Dice isn't on the ItemSlot
-        //for (int i = 0; i < itemSlot_List.Count; i++)
-        //{
-        //    if (!itemSlot_List[i].GetComponent<ItemSlot>().hasItem)
-        //    {
-        //        itemSlot_List[i].GetComponent<ItemSlot>().valueStored = 0;
-        //    }
-        //}
+            //If crates are occuping a slot
+            int crateCount = 0;
+            for (int k = 0; k < mainManager.crate_List.Count; k++)
+            {
+                if (mainManager.itemSlot_List[i].transform.position == mainManager.crate_List[k].transform.position)
+                {
+                    mainManager.itemSlot_List[i].GetComponent<ItemSlot>().hasItem = true;
 
-        ////Add Value to storedValue_List[] when the ItemSlot is occupied
-        //for (int i = 0; i < storedValue_List.Count; i++)
-        //{
-        //    storedValue_List[i] = itemSlot_List[i].GetComponent<ItemSlot>().valueStored;
-        //}
+                    k = mainManager.crate_List.Count;
+                }
+                else
+                {
+                    crateCount++;
+                }
+            }
+
+            //Turn "hasItem = false" if there are none items/crates on the Slot
+            if (itemCount >= itemManager.item_List.Count && crateCount >= mainManager.crate_List.Count)
+            {
+                mainManager.itemSlot_List[i].GetComponent<ItemSlot>().hasItem = false;
+            }
+        }
     }
 }

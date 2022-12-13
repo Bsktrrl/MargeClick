@@ -8,7 +8,10 @@ public class Item : MonoBehaviour
     MainManager mainManager;
     ItemManager itemManager;
 
-    [SerializeField] int itemValue;
+    public int itemValue;
+
+    public Vector2 itemPosition;
+    public int itemListPosition;
 
     //--------------------
 
@@ -18,11 +21,14 @@ public class Item : MonoBehaviour
         mainManager = FindObjectOfType<MainManager>();
         itemManager = FindObjectOfType<ItemManager>();
 
-        //Assign the correct image to the item
-        ImageSprite();
-
         //Assagn the correct value to the item
         itemValue = mainManager.itemValue;
+    }
+
+    private void Update()
+    {
+        //Assign the correct image to the item, based on its value
+        ImageSprite();
     }
 
 
@@ -31,19 +37,19 @@ public class Item : MonoBehaviour
 
     void ImageSprite()
     {
-        if (mainManager.itemValue == 1)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_1;
-        else if (mainManager.itemValue == 2)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_2;
-        else if (mainManager.itemValue == 3)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_3;
-        else if (mainManager.itemValue == 4)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_4;
-        else if (mainManager.itemValue == 5)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_5;
-        else if (mainManager.itemValue == 6)
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_6;
+        if (itemValue == 1)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_1;
+        else if (itemValue == 2)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_2;
+        else if (itemValue == 3)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_3;
+        else if (itemValue == 4)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_4;
+        else if (itemValue == 5)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_5;
+        else if (itemValue == 6)
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_6;
         else
-            gameObject.GetComponent<Image>().sprite = itemManager.Crate_NULL;
+            gameObject.GetComponent<Image>().sprite = itemManager.Item_NULL;
     }
 }

@@ -14,12 +14,18 @@ public class ItemManager : MonoBehaviour
     public GameObject item_Prefab;
 
     [Header("Sprites")]
+    public Sprite Item_Background;
+
     public Sprite Item_1;
     public Sprite Item_2;
     public Sprite Item_3;
     public Sprite Item_4;
     public Sprite Item_5;
     public Sprite Item_6;
+    public Sprite Item_7;
+    public Sprite Item_8;
+    public Sprite Item_9;
+    public Sprite Item_10;
     public Sprite Item_NULL;
 
     [Header("Lists")]

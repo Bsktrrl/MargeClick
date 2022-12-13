@@ -7,26 +7,39 @@ using TMPro;
 public class MainManager : MonoBehaviour
 {
     ItemManager itemManager;
+    Crate crate;
 
     [Header("Objects")]
-    [SerializeField] GameObject itemSlot_Parent;
+    public GameObject itemSlot_Parent;
     [SerializeField] GameObject itemSlot_Prefab;
 
-    [SerializeField] GameObject crate_Parent;
+    public GameObject crate_Parent;
     [SerializeField] GameObject crate_Prefab;
 
     [SerializeField] TextMeshProUGUI spawnButtonText;
+    [SerializeField] GameObject marketPlace;
 
     [Header("Lists")]
     public List<GameObject> itemSlot_List;
     public List<GameObject> crate_List;
 
     [Header("Variables")]
-    int itemSlot_Amount = 25;
-    public int itemTier_Max = 6;
+    public int mergePoints;
+    [SerializeField] TextMeshProUGUI mergePointsText;
+    public int expPoints;
+    [SerializeField] TextMeshProUGUI expPointsText;
+    public int salePoints;
+    [SerializeField] TextMeshProUGUI salePointsText;
+
+    [SerializeField] int itemSlot_Amount = 25;
+    public int itemTier_Max = 110;
     public int itemTier_Current = 1;
+
     public int buttonValue_Max = 2;
     public int buttonValue_Current;
+
+    public int luckyCrateChance = 5;
+    public int superLuckyCrateChance = 1;
 
 
     //--------------------
@@ -35,6 +48,7 @@ public class MainManager : MonoBehaviour
     private void Start()
     {
         itemManager = FindObjectOfType<ItemManager>();
+        crate = FindObjectOfType<Crate>();
 
         Instantiate();
 
@@ -42,6 +56,7 @@ public class MainManager : MonoBehaviour
     }
     private void Update()
     {
+        DisplayText();
         DisplaySpawnButtonText();
     }
 
@@ -84,6 +99,17 @@ public class MainManager : MonoBehaviour
     //--------------------
 
 
+    void DisplayText()
+    {
+        mergePointsText.text = mergePoints.ToString();
+        expPointsText.text = expPoints.ToString();
+        salePointsText.text = salePoints.ToString();
+    }
+
+
+    //--------------------
+
+
     public void SpawnButton_OnClick()
     {
         //Don't let anything happen when pressing the button, if the board is full
@@ -102,14 +128,15 @@ public class MainManager : MonoBehaviour
         while (!crateIsFound)
         {
             //Create a random number
-            int random = Random.Range(0, 25);
+            int random = Random.Range(0, itemSlot_Amount);
+            int randomLuckCrate = Random.Range(0, 100);
+            int randomSuperLuckCrate = Random.Range(0, 100);
 
             if (!itemSlot_List[random].GetComponent<ItemSlot>().hasItem)
             {
                 //Mark this ItemSlot as taken
                 itemSlot_List[random].GetComponent<ItemSlot>().hasItem = true;
 
-                //Spawn Crate on this ItemSlot
                 crate_List.Add(Instantiate(crate_Prefab, Vector3.zero, Quaternion.identity) as GameObject);
                 crate_List[crate_List.Count - 1].transform.parent = crate_Parent.transform;
                 crate_List[crate_List.Count - 1].transform.position = itemSlot_List[random].transform.position;
@@ -117,6 +144,20 @@ public class MainManager : MonoBehaviour
                 crate_List[crate_List.Count - 1].GetComponent<Crate>().crateListPosition = crate_List.Count - 1;
                 crate_List[crate_List.Count - 1].name = ("Crate " + crate_List.Count);
 
+                //Spawn LuckyCrate on this ItemSlot
+                if (randomSuperLuckCrate < superLuckyCrateChance)
+                {
+                    crate_List[crate_List.Count - 1].GetComponent<Crate>().crateTier = 3;
+                }
+                else if (randomLuckCrate < luckyCrateChance)
+                {
+                    crate_List[crate_List.Count - 1].GetComponent<Crate>().crateTier = 2;
+                }
+                else
+                {
+                    crate_List[crate_List.Count - 1].GetComponent<Crate>().crateTier = 1;
+                }
+                
                 crateIsFound = true;
             }
         }
@@ -124,5 +165,13 @@ public class MainManager : MonoBehaviour
     void DisplaySpawnButtonText()
     {
         spawnButtonText.text = buttonValue_Current.ToString();
+    }
+
+    public void OpenAllCreates_OnClick()
+    {
+        while (crate_List.Count > 0)
+        {
+            crate_List[0].GetComponent<Crate>().Crate_OnClick();
+        }
     }
 }

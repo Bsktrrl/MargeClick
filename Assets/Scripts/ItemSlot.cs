@@ -54,8 +54,13 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                                 itemManager.item_List[j].GetComponent<Item>().itemListPosition -= 1;
                             }
                         }
-                        
+
+                        //Change Tier of new items 
                         itemManager.item_List[i].GetComponent<Item>().itemTier += 1;
+
+                        //Change values upon merging
+                        mainManager.mergePoints += 1;
+                        mainManager.expPoints += itemManager.item_List[i].GetComponent<Item>().itemTier;
 
                         //If there is a value-match, destroy the moved item and increase the value of the item on this slot
                         itemManager.item_List.RemoveAt(eventData.pointerDrag.GetComponent<Item>().itemListPosition);

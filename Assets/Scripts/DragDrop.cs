@@ -57,7 +57,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
-        mainManager.BlockRaycastFalse();
+        mainManager.BlockRaycastTrue();
 
         isDragging = false;
     }
@@ -82,6 +82,9 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             itemSlotManager.isOccupied = false;
             isConnected = false;
         }
+
+        eventData.pointerDrag.transform.parent = mainManager.crate_Parent.transform;
+        eventData.pointerDrag.transform.parent = itemManager.item_Parent.transform;
     }
 
     //When Not Dragging

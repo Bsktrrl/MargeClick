@@ -10,6 +10,7 @@ public class Crate : MonoBehaviour
     CrateManager crateManager;
 
     public int crateListPosition;
+    public int crateTier;
 
 
     //--------------------
@@ -20,8 +21,15 @@ public class Crate : MonoBehaviour
         itemManager = FindObjectOfType<ItemManager>();
         mainManager = FindObjectOfType<MainManager>();
         crateManager = FindObjectOfType<CrateManager>();
-
-        gameObject.GetComponent<Image>().sprite = crateManager.Crate_1;
+    }
+    private void Update()
+    {
+        if (crateTier == 1)
+            gameObject.GetComponent<Image>().sprite = crateManager.Crate_1;
+        else if (crateTier == 2)
+            gameObject.GetComponent<Image>().sprite = crateManager.Crate_2;
+        else if (crateTier == 3)
+            gameObject.GetComponent<Image>().sprite = crateManager.Crate_3;
     }
 
 
@@ -57,6 +65,35 @@ public class Crate : MonoBehaviour
         itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemPosition = gameObject.transform.position;
         itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemListPosition = itemManager.item_List.Count - 1;
         itemManager.item_List[itemManager.item_List.Count - 1].name = ("Item " + itemManager.item_List.Count);
+
+        if (crateTier == 1)
+        {
+            itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemTier = mainManager.itemTier_Current;
+        }
+        else if (crateTier == 2)
+        {
+            int tierCount = Random.Range(1, 3);
+
+            if (mainManager.itemTier_Current + tierCount <= mainManager.itemTier_Max)
+            {
+                itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemTier = mainManager.itemTier_Current + tierCount;
+            }
+            else
+            {
+                itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemTier = mainManager.itemTier_Max;
+            }
+        }
+        else if (crateTier == 3)
+        {
+            if (mainManager.itemTier_Current + 10 <= mainManager.itemTier_Max)
+            {
+                itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemTier = mainManager.itemTier_Current + 10;
+            }
+            else
+            {
+                itemManager.item_List[itemManager.item_List.Count - 1].GetComponent<Item>().itemTier = mainManager.itemTier_Max;
+            }
+        }
 
         print("Expand ItemList: " + itemManager.item_List.Count);
     }

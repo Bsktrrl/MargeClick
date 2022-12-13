@@ -1012,6 +1012,7 @@ MonoBehaviour:
   spawnButtonText: {fileID: 110515007}
   itemSlot_List: []
   crate_List: []
-  itemValue: 1
+  itemTier_Max: 6
+  itemTier_Current: 1
   buttonValue_Max: 0
   buttonValue_Current: 0

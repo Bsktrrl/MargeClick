@@ -23,7 +23,8 @@ public class MainManager : MonoBehaviour
 
     [Header("Variables")]
     int itemSlot_Amount = 25;
-    public int itemValue = 1;
+    public int itemTier_Max = 6;
+    public int itemTier_Current = 1;
     public int buttonValue_Max = 2;
     public int buttonValue_Current;
 

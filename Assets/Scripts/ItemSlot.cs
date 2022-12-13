@@ -44,7 +44,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 if (gameObject.transform.position == itemManager.item_List[i].transform.position)
                 {
                     //If it matches with an item, check if that item has the same value as the moved item
-                    if (itemManager.item_List[i].GetComponent<Item>().itemValue == eventData.pointerDrag.GetComponent<Item>().itemValue)
+                    if (itemManager.item_List[i].GetComponent<Item>().itemTier == eventData.pointerDrag.GetComponent<Item>().itemTier && eventData.pointerDrag.GetComponent<Item>().itemTier < mainManager.itemTier_Max)
                     {
                         //Prepare all items higher in item_List for this item's removal, by decreasing their element position
                         for (int j = 0; j < itemManager.item_List.Count; j++)
@@ -55,7 +55,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                             }
                         }
                         
-                        itemManager.item_List[i].GetComponent<Item>().itemValue += 1;
+                        itemManager.item_List[i].GetComponent<Item>().itemTier += 1;
 
                         //If there is a value-match, destroy the moved item and increase the value of the item on this slot
                         itemManager.item_List.RemoveAt(eventData.pointerDrag.GetComponent<Item>().itemListPosition);
